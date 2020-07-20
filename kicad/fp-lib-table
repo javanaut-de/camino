@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name camino)(type KiCad)(uri "$(KIPRJMOD)/camino.pretty")(options "")(descr ""))
+)

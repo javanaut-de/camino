@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name camino-eagle-import)(type Legacy)(uri ${KIPRJMOD}/camino-eagle-import.lib)(options "")(descr ""))
+)

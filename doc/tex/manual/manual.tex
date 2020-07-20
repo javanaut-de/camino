@@ -1,0 +1,517 @@
+%Tutorium Template v1.001 (8.1.15)
+
+\documentclass[a4paper]{article}
+
+\usepackage[usenames,dvipsnames]{pstricks}
+\usepackage{pst-plot}
+\usepackage{pst-circ}
+
+\usepackage{amsfonts}   
+%\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{ulsy}
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+
+\usepackage{eurosym}
+
+\usepackage{tabu}
+
+\usepackage{multido}
+
+\usepackage[a4paper, left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
+
+\parindent 0pt
+\parskip 12pt
+
+\newcommand{\korres}
+{
+	\begin{pspicture}(-0.3,-0.1)(+0.3,+0.1)
+	\psline{-}(-0.2,0.0)(+0.2,0.0)
+	\pscircle[fillstyle=solid,fillcolor=white](-0.3,0.0){0.1}
+	\pscircle[fillstyle=solid,fillcolor=black](+0.3,0.0){0.1}
+	\end{pspicture} \,
+}
+
+\newcommand{\passed}
+{
+  {\huge \checkmark}
+}
+
+\newcommand{\fail}
+{
+  {\huge \blitze}
+}
+
+\newcommand{\eur}
+{
+  {\euro \,}
+}
+
+\newcommand{\disclamer}
+{
+  {\small Entdeckte Fehler, falls es Fragen oder Anregungen zur Verbesserung gibt, oder etwas schwer verständlich ist \newline bitte mail an: marius.kohsiek@haw-hamburg.de, Danke! (Letztes Update {\today}, {\tiny Verfasst mit \LaTeX ;)})}
+}
+
+
+%Beispiele
+
+%Eigene Farben definieren
+
+%\newrgbcolor{mycolor1}{0.5 0.3 0.3}
+
+%Grafiken einfügen:
+
+%\includegraphics[scale=0.55]{dateiname.eps} 
+
+%\begin{pspicture}(-1.0,-10)(+1.0,+10)
+
+%---Schaltpläne---
+
+%Knotenpunkt
+%\pnode(0,1){A}
+
+%Widerstand:
+%\resistor[arrows=o-*,tensionlabel={$U_R$},tensionoffset=-0.35,tensionlabeloffset=-0.7](-2.0,+1.0)(+2.0,+1.0){R}
+
+%Kondensator:
+%\capacitor[arrows=-|,intensitylabel={$i_C$},tensionlabel={$U_C$},tensionoffset=-0.6,tensionlabeloffset=-0.9](+2.0,+1.0)(+2.0,-2.0){C}
+
+%Spule:
+%\coil[arrows=-|,intensitylabel={$i_C$},tensionlabel={$U_C$},tensionoffset=-0.6,tensionlabeloffset=-0.9,dipolestyle=elektorcurved](+2.0,+1.0)(+2.0,-2.0){C}
+
+%Leitung(mit Strompfeil)
+%\wire[arrows=-o,intensitylabel={i}](+2.0,+1.0)(+4.0,+1.0)
+
+%Spannungspfeil
+%\tension[arrows=-|](-2.0,+1.0)(-2.0,-2.0){$x(t)$}
+
+%OpAmp
+%\OA(A)(B)(C)
+	
+%Operatoren
+% "entspricht"     \mathop{\widehat{=}}
+
+%---kartesisches Koordinatensystem---
+
+%\begin{pspicture}(-0.75,-0.75)(+12.75,+6.0)
+
+%	\psset{xunit=6cm,yunit=10cm}
+
+%	\psxTick(1.0){1.0}
+%	\psyTick(0.1){0.1}
+
+%	\rput(2.35,0.0){\large t}
+%	\rput(0.16,0.5){\large g(t)}
+
+%	\psaxes[ticks=none,labels=none]{->}(0.0,0.0)(0.0,0.0)(+2.25,+0.55)
+
+%	\psline[linecolor=red]{-}(0.0,0.0)(0.5,0.5)
+%	\psline[linecolor=red]{-}(0.5,0.5)(1.0,0.0)
+
+%\end{pspicture}
+
+
+
+\begin{document}
+
+\begin{center}
+
+
+{\huge Camino v1.1}
+
+\hspace{0.2cm}
+
+Letztes Update {\today}, {\tiny Verfasst mit \LaTeX ;)}
+
+
+\vspace{5cm}
+
+\includegraphics[scale=0.4]{pix/camino.eps}
+
+\end{center}
+
+\newpage
+
+
+\begin{center}
+
+
+{\huge Vorwort}
+
+\end{center}
+
+Das camino-Board ist ein Experimentierboard und Entwicklungswerkzeug für Mikrocontroller-Projekte mit dem ATMega32. Natürlich kann man Vergleichbares fertig aufgebaut für kleines Geld kaufen, da gibt es gleich einen Haufen vergleichbare Projekte und Produkte. Aber wenn man sich aber die Mühe gemacht hat, das Ganze einmal selbst zu ätzen/drucken/löten, hat man gleich ein wenig Erfahrung gesammelt, die bei späteren Projekten nützlich sein wird. Auch hat man schon einmal einen Überblick was ein $\mu$C für Schaltungsbestandteile zum Betrieb benötigt, z.B. Stromversorgung oder Taktgeber bzw. Resonator. Wink-mit-dem-Zaunpfahl: Es darf gerne für das eigene Projekt vom Layout geklaut werden ;)
+
+Das Board selbst wurde mit dem bekannten und einfach zu erlernenden Layoutprogramm EAGLE entworfen. Ihr findet hier ebenfalls eine Bibliotheksdatei für EAGLE welche alle verwendeten Komponenten enthält, sowie einige häufig gebrauchte Standardteile, welche vielseitige Verwendung finden. Weiterhin sind für jedes Bauteil einige Tips zur Anwendung und die wichtigsten Eckdaten aufgelistet, sowie die Datenblätter, welche genauere Informationen zu den Komponenten liefern. Es gibt ein Verzeichnis mit den Bestellnummern des Versenders Reichelt, das Bestellen von Teilen für ein eigenes Projekt, oder der zum Nachbau benötigten Teile sollte damit keine großen Schwierigkeiten bereiten.
+
+Die Intention hinter diesem Projekt ist natürlich den ein oder anderen von euch dazu zu verleiten sich mal ein bischen auf dem Gebiet Mikrocontroller auszuprobieren. Falls ihr euch eine eigene Ausgabe von Camino anfertigen wollt (Bauzeit etwa 4-6 Abende) findet ihr ein paar Tips wie die Teile bearbeitet werden müssen. Zum Aufbau gehören noch 3 Kunststoffteile aus dem 3D-Drucker. Diese können für einige Euro online bestellt werden. Dateien mit den Druckdaten zum selberdrucken findet ihr hier ebenso. Zuletzt wird eine Aluminiumplatte mit einigen Bohrungen benötigt, diese findet man z.b. beim Schlosser, eine technische Zeichung für sie ist vorhanden.
+
+Die Voraussetzungen bringt ihr eigentlich schon mit dem Studium mit. Wer auf Nummer sicher gehen will, hat die Scheine Informatik 2 (Die AVR Controller werden in der Sprache C programmiert), Elektronik 1 und 2 (Für die analoge und digitale Elektronik) und MPT(Ihr macht dort vergleichbares wie die Testprogramme für dieses Board aus eigener Feder) schon in der Tasche. Aus der Vorpraxis bringt der eine oder andere auch etwas Löterfahrung mit, welche hier definitiv benötigt wird. Den Schwierigkeitsgrad welcher hier vorliegt würde ich als mittel bis Anfang fortgeschritten bezeichnen, aber eigentlich kann man die Platine auch kaum ausversehen ernsthaft beschädigen, was bedeutet, dass man mit etwas Geduld den Dreh schnell raus hat und den nötigen Skill nebenbei aufbaut, bzw. abstaubt ;)
+
+Aber, wenn ich es mir recht überlege, kann man ansich, bei etwas Interesse, auch mit fast 0 Vorwissen anfangen :)
+
+Um das Board nach dem Auflöten der Bauteile ausgiebig zu testen sind eine Reihe von Beispielprogrammen vorhanden. Hier könnt ihr auch einen ersten Einblick gewinnen wie die Peripherie von Mikrocontrollern der Baureihe ATMega programmiert werden.
+
+Der Controller wird mittels einem separat zu erwerbenden Programmers mit dem PC-Verbunden und so programmiert. Dieser wird (wenn es klappt) direkt aus Atmel Studio angesprochen. Diese IDE baut auf Visual Studio von MS auf (und sieht auch so aus) und kostet erfreulicherweise nichts. Die Einrichtung der gesamten Toolchain könnt ihr weiter unten ausführlich nachlesen.
+
+Zu den Features des Boards gehören eine große Zahl Taster, Schalter und Status-LEDs. Eine RS232-Schnittstelle, ein 16x2-Zeichen-LC-Display, einfach aufgebaute analoge Eingangs- und Ausgangs- bzw. PWM-Filter um analoge Spannungen zu messen, bzw auszugeben. Ein Lautsprecher, ein IR-Empfänger und als besonderes Schmankerl ein USB-Port welcher es möglich macht, den Controller als lowspeed USB-Device an einen PC oder Laptop (mit USB 1.1 oder 2.0 Anschluss) anzuschließen. Schaltung und Software lassen sich auf einfache Weise an so gut wie alle ATMega und auch ATTiny, bzw AVR8-kompatiblen Controller anpassen! Es sind Bibliotheken für die Ansteuerung des LCD vorhanden (Es wurde das Beispiel von mikrocontroller.net angepasst), sowie ein ausführlich dokumentiertes Paar von Beispielprogrammen für die Kommunikation über den USB-Port mit Codeblocks/libusb0 auf der PC-Seite und dem V-USB-Projekt auf der $\mu$C-Seite.
+ 
+Alles in allem sollte dieses Projekt euch, bei vorhandenem Interesse und Enthusiasmus, einen einfachen Weg (spanisch: Camino) in die Welt der Atmel AVR Mikrocontroller ebnen!
+
+Ich wünsche euch viel Spass bei euren ersten Platinen. :)
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+\section{Beschreibung}
+
+\begin{pspicture}(-8.25,-5.5)(+8.25,+5.25)
+
+\rput(0,0){\includegraphics[scale=0.15]{pix/peripherals.eps}}
+
+%\psgrid[subgriddiv=1](0,0)(-8,-8)(8,8)
+
+\psframe(+0.9,+1.05)(+4.65,+2.9)
+\psline[linewidth=3pt]{->}(+5.0,+4)(+3.5,+2.9)
+\rput(+5.0,+4.5){\fbox{\parbox{4cm}{16x2 Zeichen LCD \\  HD44780-kompatibel}}}
+
+\psframe(-0.5,+2.45)(-0.1,+2.7)
+\psline[linewidth=3pt]{->}(-1.0,+4)(-0.3,+2.7)
+\rput(-1.0,+4.2){\fbox{\parbox{2cm}{Power LED}}}
+
+\psframe(-1.1,-0.5)(-0.6,-1.0)
+\psline[linewidth=3pt]{->}(-5.0,+4)(-0.8,-0.5)
+\rput(-5.0,+4.2){\fbox{\parbox{2.25cm}{Reset Button}}}
+
+
+
+\psframe(-3.95,-1.55)(-0.5,-3.175)
+\psline[linewidth=3pt]{->}(-4.5,-4)(-3.5,-3.175)
+\rput(-5.0,-4.5){\fbox{\parbox{2.0cm}{Port D \\ IO-Bank}}}
+
+\psframe(+3.95,-1.55)(+0.5,-3.175)
+\psline[linewidth=3pt]{->}(+4.5,-4)(+3.5,-3.175)
+\rput(+5.0,-4.5){\fbox{\parbox{2.0cm}{Port B \\ IO-Bank}}}
+
+\psframe(-0.4,-2.2)(+0.37,-3.0)
+\psline[linewidth=3pt]{->}(0,-4)(0.0,-3.0)
+\rput(0.0,-4.3){\fbox{\parbox{2.5cm}{IR-Empfänger}}}
+
+\end{pspicture}
+
+
+\section{Konfiguration}
+
+
+\begin{pspicture}(-8.25,-5.5)(+8.25,+6.25)
+
+\rput(0,0){\includegraphics[scale=0.15]{pix/switches.eps}}
+
+
+\psframe(-2.7,0.0)(-1.9,+0.7)
+\psline[linewidth=3pt]{->}(-5.5,-4)(-2.7,0.0)
+\rput(-5.5,-4.7){\fbox{\parbox{3cm}{SW3: \\ 1-2: RS232 \\ 3-4: USB}}}
+
+\psframe(-2.7,-0.25)(-1.5,-0.925)
+\psline[linewidth=3pt]{->}(-0.25,-4.0)(-1.65,-0.925)
+\rput(-0.25,-4.5){\fbox{\parbox{4cm}{SW1: Port B \\ 1-8: Taster, Schalter, LED}}}
+
+\psframe(+1.0,-0.25)(+2.2,-0.925)
+\psline[linewidth=3pt]{->}(+5.0,-4.0)(+1.9,-0.925)
+\rput(+5.0,-4.5){\fbox{\parbox{4cm}{SW2: Port D \\ 1-8: Taster, Schalter, LED}}}
+
+\psframe(+2.4,0.35)(+3.6,+1.0)
+\psline[linewidth=3pt]{->}(+6.25,+4.0)(+3.0,+1.0)
+\rput(+6.25,+4.5){\fbox{\parbox{2.5cm}{SW5: PWM \\ 3-8: Filtermodi}}}
+
+\psframe(+1.25,0.0)(+2.4,+0.65)
+\psline[linewidth=3pt]{->}(+2.0,+4.0)(+1.8,+0.65)
+\rput(+2.0,+4.7){\fbox{\parbox{3cm}{SW4: \\ 1: IR-Empfänger \\ 2-8: LCD}}}
+
+\psframe(+0.55,+0.8)(+0.9,+1.55)
+\psline[linewidth=3pt]{->}(-2.0,+4.2)(+0.55,+1.55)
+\rput(-2.0,+4.7){\fbox{\parbox{3cm}{SW7: LCD Power \\ und Beleuchtung}}}
+
+\psframe(-3.5,+1.4)(-2.8,+2.65)
+\psline[linewidth=3pt]{->}(-6.3,+4.0)(-3.4,+2.65)
+\rput(-6.3,+4.95){\fbox{\parbox{3.5cm}{SW6: Analog In \\ 1+2: Komparator \\ 5-6: ADC In \\ 7+8: ADC differential}}}
+
+\end{pspicture}
+
+
+\section{Zusammenbau}
+
+\subsection{Bohren}
+
+Folgende Bohrungen müssen mit den angegebenen Durchmessern gebohrt werden.
+
+\begin{tabular}{ll}
+	\hline
+	\textbf{Bohrung} & \textbf{Durchmesser in mm} \\
+	\hline
+Löcher für Steckbuchsen 2mm (Laborstecksystem) & 5,0 \\
+Seitliche Befestigungslöcher der seriellen Buchse & 3,3 (3,5 passt auch) \\
+Befestigungslöcher der Platine & 3,0 \\
+Befestigungsloch des Kühlkörpers des Spannungsreglers & 3,0 \\
+Befestigungslöcher des LC-Displays & 3,0 \\
+Befestigungslöcher des Lautsprechers & 3,0 \\
+Seitliche Befestigungslöcher der USB-Buchse & 2,4 (2,5 passt auch) \\
+Klemmleisten & 1,2 \\
+alle übrigen Bohrungen & 1,1 \\
+	\hline
+\end{tabular}
+
+\underline{Tips}
+
+Die großen Bohrungen lassen sich genauer bohren wenn man mit 1,1mm auf einer kleinen Standbohrmaschine vorbohrt! Wenn man die Vias nicht nieten möchte tut es statt 1,1mm auch 1,0mm.
+
+\underline{Hinweis}
+
+Hartmetall-Präzisions-Bohrer brechen leicht ab und kosten so um die 2\euro pro Stück! Daher schön gerade bohren und nicht zuviel Druck aufbauen!
+
+\subsection{Nieten}
+
+Ist beabsichtig die Verbindungen zwischen den Lagen der Leiterbahnebenen (Vias) mittels Nieten zu verbinden, so sollte dies direkt nach dem Bohren erfolgen.
+
+\subsection{Löten}
+
+Zuerst empfiehlt es sich die Platine beidseitig mit 1-2 dünnen Lagen Lötlack aus der Dose, z.B. SK10 von Kontakt, zu beschichten und etwa 30 Minuten trockenen zu lassen.
+
+Falls die Vias genietet wurden, müssen diese rundherum mit einer dünnen Schicht Lot mit ihren Pads verbunden werden. Die alleinige Verbindung durch die Nieten ist unzuverlässig.
+
+{\large Als nächstes werden die SMD-Bauteile verlötet.}
+
+\underline{C47 und C55}
+
+Die beiden können auch durch eine Kombination von günstigeren Keramikkondensatoren ersetzt werden, beispielsweise 220nF + 100nF + 10nF. Im Format 0805 passen diese nebeneinander auf die Pads.
+
+{\large Nun werden die Bauteile in Durchsteckbauweise, also die mit Pins, aufgesteckt und verlötet.} 
+
+\underline{ATMega 32}
+
+Es empfiehlt sich in die eingelötete Fassung noch 1-2 weitere Fassungen einzustecken, bevor der Controller eingesteckt wird. Dies vermeidet Verschleiss der schwer zu wechselnden eingelöteten Platine, falls häufiger der Controller ein- und ausgesteckt wird.
+
+{\large Als letztes folgt der mechanische Zusammenbau.}
+
+\section{Anhang}
+
+\subsection{Anschlüsse auf dem Board}
+
+\begin{pspicture}(-8.25,-7.0)(+8.25,+8.25)
+
+\rput(0,0){\includegraphics[scale=0.15]{pix/connectors.eps}}
+
+\psframe(-3.4,-1.4)(-4.65,+0.55)
+\psline[linewidth=3pt]{->}(-6,-4)(-4,-1.4)
+\rput(-6,-4.5){\fbox{\parbox{4cm}{Port D \\ Laborsteckbuchsen 2mm}}}
+
+\psframe(+3.4,-1.5)(+4.65,+0.425)
+\psline[linewidth=3pt]{->}(+6,-4)(+4,-1.5)
+\rput(+6,-4.5){\fbox{\parbox{4cm}{Port B \\ Laborsteckbuchsen 2mm}}}
+
+\psframe(-3.35,-0.62)(-2.65,+0.5)
+\psline[linewidth=3pt]{->}(-3,-5.5)(-3,-0.62)
+\rput(-3,-6.0){\fbox{\parbox{4cm}{CON4: Port D \\ Pfostenstiftleiste 10-polig}}}
+
+\psframe(+3.35,-1.05)(+2.65,+0.1)
+\psline[linewidth=3pt]{->}(+3,-5.5)(+3,-1.05)
+\rput(+3,-6.0){\fbox{\parbox{4cm}{CON2: Port B \\ Pfostenstiftleiste 10-polig}}}
+
+\psframe(+4.0,+0.4)(+4.65,+1.2)
+\psline[linewidth=3pt]{->}(+6.25,+4.0)(+4.45,+1.2)
+\rput(+6.5,+4.5){\fbox{\parbox{3.5cm}{CON10: PWM \\ Klemmleiste 4-polig}}}
+
+\psframe(-1.125,+2.7)(-0.55,+3.525)
+\psline[linewidth=3pt]{->}(+4.0,+5.5)(-0.55,+3.525)
+\rput(+5.5,+6.0){\fbox{\parbox{4.0cm}{CON9: Versorgung \\ Buchse 5,5 mm x 2,1 mm}}}
+
+\psframe(-2.1,+2.05)(-0.9,+2.675)
+\psline[linewidth=3pt]{->}(+0.0,-4.0)(-1.3,+2.05)
+\rput(0.0,-4.5){\fbox{\parbox{4.0cm}{CON3: Port C \\ Pfostenstiftleiste 10-polig}}}
+
+\psframe(-4.6,+0.5)(-3.8,+1.4)
+\psline[linewidth=3pt]{->}(-6.0,+2.8)(-4.6,+1.4)
+\rput(-6.5,+3.5){\fbox{\parbox{3.0cm}{CON5: ISP \\ 6-polig \\ Atmel-kompatibel}}}
+
+\psframe(-4.625,+1.425)(-3.8,+3.2)
+\psline[linewidth=3pt]{->}(-5.0,+5.0)(-4.3,+3.2)
+\rput(-6,+5.5){\fbox{\parbox{4cm}{CON11: Analog-In \\ Klemmleiste 12-polig}}}
+
+\psframe(-3.75,+2.55)(-2.55,+3.25)
+\psline[linewidth=3pt]{->}(-3,+6.5)(-3.2,+3.25)
+\rput(-5,+7.0){\fbox{\parbox{4.0cm}{CON1: Port A \\ Pfostenstiftleiste 10-polig}}}
+
+\psframe(-2.35,+2.7)(-1.15,+3.35)
+\psline[linewidth=3pt]{->}(-1.5,+5.5)(-1.7,+3.35)
+\rput(-0.0,+6.2){\fbox{\parbox{4.5cm}{CON6: JTAG Schnittstelle \\ 10-polig \\ Atmel-kompatibel}}}
+
+
+\end{pspicture}
+
+
+
+\subsection{Pinbelegung der Buchsen}
+
+\newpage
+
+\subsection{Schaltplan}
+
+\begin{center}
+
+\includegraphics[scale=0.2]{pix/schematic.eps}
+
+\end{center}
+
+\subsection{Bestückungsplan}
+
+\begin{center}
+
+\includegraphics[scale=1.05]{pix/layout_top.eps}
+
+Oberseite
+
+\end{center}
+
+\newpage
+
+\begin{center}
+
+\includegraphics[scale=1.05]{pix/layout_bottom.eps}
+
+Unterseite (von unten betrachtet)
+
+\end{center}
+
+\newpage
+
+Tips zum Druck der Pläne
+
+Die beiden Bestückungspläne lassen sich auf einem guten Laserdrucker problemlos in lesbarer Qualität in A4 ausdrucken, der Schaltplan jedoch besitzt für dieses Vorhaben eine zu hohe Auflösung. Hier ist es empfehlenswert diesen entweder im Format A2 oder auf mehrere Blätter A4 als Poster zu drucken. Der Acrobat Reader beherrscht dieses gerüchteweise ab Version 9, auch das Freewaretool Gimp kann dieses bewerkstelligen. Dazu kopiert man zuerst per Rechtsklick den Schaltplan aus dem diesem PDF und fügt ihn per STRG-V in Gimp ein. Dann zieht man in Gimp einige Hilfslinien per Mausdrag aus den Seitenlinealen und wendet das Tool Guillotine an, siehe die folgende Abbildung. 
+
+\includegraphics[scale=0.47]{pix/gimp.eps}
+
+Die nun erhaltenen einzelnen Bilder druckt man nun aus, schneidet diese mit einer Schere zurecht, und fügt die einzelnen Seiten mit Tesafilm aneinander.
+
+\newpage
+
+
+\subsection{Bauteilliste}
+
+
+Teil 1 (Summe 38,11	\euro)
+
+
+{\tiny
+\begin{tabular}{llllllllll}
+
+	\hline
+	\textbf{Bauteil} & \textbf{Art} & \textbf{Type} &\textbf{Wert} &\textbf{Bauform} &\textbf{Datenblatt} &\textbf{Anzahl}  &\textbf{Bestellnummer} &\textbf{Einzel} &\textbf{Posten} \\
+	\hline
+	
+Widerstand & & & 4R7 & 1206 & Yageo RC1206 & 1 & SMD 1/4W 4,7 & 0,10 & 0,10 \\
+Widerstand & & & 10	& 1206	& Yageo RC1206 & 1	& SMD 1/4W 10	& 0,10 & 0,10 \\
+Widerstand	& & &	47 & 1206	& Yageo RC1206 & 1 & SMD 1/4W 47 & 0,10 & 0,10 \\
+Widerstand	& & &	68 & 1206 & Yageo RC1206 & 2	 & 	SMD 1/4W 68 & 0,10 & 0,21 \\
+Widerstand	& & &	330 & 1206 & Yageo RC1206	 & 4	 & 	SMD 1/4W 330 & 0,10 & 0,41 \\
+Widerstand	& & &	390 & 1206 & Yageo RC1206	 & 18	 & 	SMD 1/4W 390 & 0,08 & 1,48 \\
+Widerstand	& & &	470 & 1206 & Yageo RC1206	 & 1	 & 	SMD 1/4W 470 & 0,10 & 0,10 \\
+Widerstand	& & &	680 & 1206 & Yageo RC1206	 & 1	 & 	SMD 1/4W 680 & 0,10 & 0,10 \\
+Widerstand	& & &	1K & 1206 & Yageo RC1206	 & 8	 & 	SMD 1/4W 1,0K & 0,10 & 0,82 \\
+Widerstand	& & &	1K5 & 1206 & Yageo RC1206	 & 1	 & 	SMD 1/4W 1,5K & 0,10 & 0,10 \\
+Widerstand	& & &	4K7 & 1206 & Yageo RC1206	 & 1	 & 	SMD 1/4W 4,7K & 0,10 & 0,10 \\
+Widerstand	& & &	10K & 1206 & Yageo RC1206	 & 45	 & 	SMD 1/4W 10K & 0,08 & 3,69 \\
+Widerstand	& & &	100K & 1206 & Yageo RC1206 & 18	 & 	SMD 1/4W 100K & 0,08 & 1,48 \\
+Widerstand	& & &	220K & 1206 & Yageo RC1206 & 1	 & 	SMD 1/4W 220K & 0,10 & 0,10 \\
+Widerstand	& & &	1MEG & 1206 & Yageo RC1206 & 17	 & 	SMD 1/4W 1,0M & 0,08 & 1,39 \\
+Kondensator	& & &	22p & 1206 & Yageo NP0 & 2	 & NPO-G1206 22P & 0,04 & 0,08 \\
+Kondensator	& & &	100p & 1206 & Yageo NP0	& 3	 & NPO-G1206 100P & 0,04 & 0,12 \\
+Kondensator	& & &	150p & 0805 & Yageo NP0	& 2	 & NPO-G0805 150P	& 0,04 & 0,08 \\
+Kondensator	& & &	330p & 1206 & Yageo NP0	& 1	 & NPO-G1206 330P	& 0,04 & 0,04 \\
+Kondensator	& & &	680p & 0805 & Yageo NP0	& 2	 & NPO-G0805 680P	& 0,04 & 0,08 \\
+Kondensator	& & &	1n5 & 1206 & Yageo NP0 & 2	 & NPO-G1206 1,5N	& 0,04 & 0,08 \\
+Kondensator	& & &	22n & 1206 & Yageo X7R & 2	 & X7R-G1206 22N & 0,04 & 0,08 \\
+Kondensator	& & &	47n & 1206 & Yageo X7R & 2	 & X7R-G1206 47N & 0,05 & 0,10 \\
+Kondensator	& & &	100n & 1206 & Yageo X7R	& 12 & 	X7R-G1206 100N & 0,05 & 0,60 \\
+Kondensator	& & &	220n & 1206 & Yageo Y5V	& 16 & 	Y5R-G0603 220N & 0,05 & 0,80 \\
+Kondensator	& & &	330n & 1812 & WIMA SMD-PET & 3 & SMD-1812 330N & 0,82 & 2,46 \\
+Kondensator & Tantal & & 10u & 1206 & Vishay 594D & 1 & SMD TAN.10/16 & 0,14 & 0,14 \\
+Kondensator & Elko & & 1000u & 200mil & Panasonic FR & 3 & RAD FR 1.000/35 & 0,65 & 1,95 \\
+Pfostenstiftleiste & 10-polig  & &  & & BH1S-XX-L & 6 & WSL 10G & 0,08 & 0,48 \\
+Pfostenstiftleiste & 6-polig & &  & & BH1S-XX-L & 1 & WSL 6G & 0,16 & 0,16 \\
+Laborsteckbuchse  & 2mm & & & & MBI 1 & 18 & MBI 1 SW & 0,76 & 13,68 \\
+Klemmleiste & 4-polig & & & & WAGO 23X-XXX & 1 & WAGO 233-504 & 1,30 & 1,30 \\	
+Gleichrichter & W+W- & & & & BXXXC1500 & 1 & B250C1500-W+W & 0,43 & 0,44 \\
+ATMega 32 & & & & & ATMega32 & 1 & ATMEGA 32-16 DIP & 3,35 & 3,35 \\
+IC-Sockel & 40-polig & & & & Garry MPE & 3 & GS 40P & 0,60 & 1,80 \\
+Potentiometer & Trimmer & & & & WIW3296 & 1 & 64Y-10K & 0,22 & 0,22 \\
+Quarz & & & 16Mhz & HC49S & HC49S Quarz & 1 & 16,0000-HC49U-S & 0,14 & 0,14 \\
+Schalter & "`Knitterstyle"' & & & & 5236AB & 1 & AS 500APC & 2,20 & 2,20 \\
+Spannungsregler & & $\mu$A7805 & 5V & & LM78XX & 1	& $\mu$A 7805 & 0,27 & 0,27 \\
+Einbaubuchse & D-SUB Female & 9-polig & & & D-SUB 9 Female & 1 & D-SUB BU 09US & 0,36 & 0,36 \\
+Distanzhülse & Metall, Gewinde & M3x25mm  & & & & 11 & DA 25MM & 0,20 & 2,20 \\
+Unterlegscheiben & 100er Packung & M3 & DIN125 & & DIN125 Scheiben & 1 & SKU 3,2-100 & 1,15 & 1,15 \\
+Muttern & 100er Packung & M3 & DIN934 & & & 1 & SK M3 & 1,05 & 1,05 \\
+Distanzhülse & Kunststoff & 3,6mmx5mm & & & & 8 & DK 5MM & 0,04 & 0,32 \\
+Schraube & 50er Packung & M3x16 & DIN7985-Z & & & 1 & SKL M3X16-50 & 1,15 & 1,15 \\
+Schraube & 50er Packung & M3x10 & DIN7985-Z & & & 1 & SKL M3X10-50 & 1,15 & 1,15 \\
+																												
+																												
+														
+
+	\hline
+\end{tabular}
+}
+
+Teil 2 (Summe 62,28\euro)
+
+
+{\tiny
+\begin{tabular}{llllllllll}
+
+	\hline
+	\textbf{Bauteil} & \textbf{Art} & \textbf{Type} &\textbf{Wert} &\textbf{Bauform} &\textbf{Datenblatt} &\textbf{Anzahl}  &\textbf{Bestellnummer} &\textbf{Einzel} &\textbf{Posten} \\
+	\hline
+	
+
+Einbaukupplung & DC-Buchse & 6,5mm x 2mm & & & LUM 1613-14 & 1 & LUM 1613-14 & 0,98 & 0,98 \\
+Klemmleiste & 12-polig & & & & WAGO 23X-XXX & 1 & WAGO 233-512 & 3,50 & 3,50 \\
+Taster & & & & & LSG1301.XX & 17 & TASTER 9314 & 0,22 & 3,74 \\
+Schalter & & & & & ESP Serie & 17 & SS ESP101 & 0,48 & 8,16 \\
+Diode & Schottky & BAT43 & & & TMMBAT43 & 1 & BAT 43 SMD & 0,09 & 0,09 \\
+Diode & & S4D & & & S4D & 1 & S 4D SMD & 0,20 & 0,20 \\
+Pegelwandler & RS232 & MAX202 & & & MAX202 & 1 & MAX 202 ECWE & 1,35 & 1,35 \\
+Induktivität & SMD & & 10$\mu$H & & Fastron 1008F & 1 & L-1008F 10$\mu$ & 0,23 & 0,23 \\
+Induktivität & SMD & & 15mH & & Fastron 09P & 1 & 09P 15M & 0,28 & 0,28 \\
+Diode & Zener	 & & 3,6V & DO-35 & BZX79-XXVX & 2 & ZF 3,6 & 0,05 & 0,10 \\
+Diode & Zener & & 5,6V & DO-35 & BZX79-XXVX & 1 & ZF 5,6 & 0,05 & 0,05 \\
+LCD & mit Beleuchtung & 16x2 Zeichen & & & Displaytech 162C & 1	& LCD 162C LED & 6,50 & 6,50 \\
+
+
+LED & blau & & & 1206 & Kingbright KP-3216 & 16 & SMD-LED 1206 BL & 0,18 & 2,88 \\
+LED & rot & & & 1206 & Kingbright KP-3216 & 1 & SMD-LED 1206 RT & 0,11 & 0,11 \\
+Lautsprecher &  & LSP-3015 & & & LSP-3015 & 1 & LSP-3015 & 4,20 & 4,20 \\
+Schalter & DIP & 8-polig & & DIL 16 & NT XX & 5 & NT 08 & 0,28 & 1,40 \\
+Schalter & DIP & 4-polig & & DIL 8 & NT XX & 1 & NT 04 & 0,24 & 0,24 \\
+Transistor & NMOS & IRLML2502 & & SOT-23 & IRLML2502 & 16 & IRLML 2502 & 0,18 & 2,88 \\
+IR-Receiver &  & TSOP 31238 &  & & TSOP312XX & 1 & TSOP 31238 & 0,77 & 0,77 \\
+Kühlkörper &  &  & 12 K/W &  & Alutronic PR19\_35\_SE & 1 & V 4330K & 1,20 & 1,20 \\
+Einbaubuchse & USB & & & & USB Type B Print & 1 & USB BW & 0,22 & 0,22 \\
+
+																		
+Programmer & USB->ISP & 6-pin & & & DIAMEX USB ISP & 1 & DIAMEX USB ISP & 21,50 & 21,50 \\																		
+Gummifüße & 6er-Pack & 20mmx6mm & & & & 1 & GF 62-6 & 1,70 & 1,70	\\
+
+	\hline
+\end{tabular}
+}		
+
+\end{document}
+

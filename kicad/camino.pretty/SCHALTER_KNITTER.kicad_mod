@@ -1,0 +1,18 @@
+(module SCHALTER_KNITTER (layer F.Cu) (tedit 0)
+  (fp_text reference SW23 (at 0 0) (layer F.SilkS) hide
+    (effects (font (size 1.27 1.27) (thickness 0.15)) (justify right top))
+  )
+  (fp_text value MAIN (at 0 0) (layer F.SilkS) hide
+    (effects (font (size 1.27 1.27) (thickness 0.15)) (justify right top))
+  )
+  (fp_line (start -6.6 -3.5) (end -6.6 3.5) (layer F.SilkS) (width 0.127))
+  (fp_line (start -6.6 3.5) (end 6.6 3.5) (layer F.SilkS) (width 0.127))
+  (fp_line (start 6.6 3.5) (end 6.6 -3.5) (layer F.SilkS) (width 0.127))
+  (fp_line (start 6.6 -3.5) (end -6.6 -3.5) (layer F.SilkS) (width 0.127))
+  (pad SW thru_hole circle (at 0 0) (size 2.6 2.6) (drill 1.6) (layers *.Cu *.Mask)
+    (solder_mask_margin 0.1016))
+  (pad OFF thru_hole circle (at 4.7 0) (size 2.6 2.6) (drill 1.6) (layers *.Cu *.Mask)
+    (solder_mask_margin 0.1016))
+  (pad ON thru_hole rect (at -4.7 0) (size 2.6 2.6) (drill 1.6) (layers *.Cu *.Mask)
+    (solder_mask_margin 0.1016))
+)
